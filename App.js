@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Button,
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -11,6 +12,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Orientation from 'react-native-orientation';
+
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -45,12 +49,17 @@ export default class App extends Component {
     this.state = { name: 'なまえ' };
   }
 
+  componentWillMount() {
+    Orientation.lockToPortrait();
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : null}
+          keyboardVerticalOffset={width / 4}
         >
           <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
             <Text style={styles.welcome}>Welcome to React Native!</Text>
@@ -66,6 +75,7 @@ export default class App extends Component {
             <Button title="送信" onPress={() => alert(this.state.name)} />
           </ScrollView>
         </KeyboardAvoidingView>
+        <Text>{`height: ${height}, width: ${width}`}</Text>
       </SafeAreaView>
     );
   }
